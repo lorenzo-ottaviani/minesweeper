@@ -5,8 +5,8 @@ root = ctk.CTk()
 root.title("Minesweeper")  # Définir le titre de la fenêtre
 
 # Dimensions du jeu
-rows = 5
-cols = 5
+rows = 24
+cols = 24
 
 # Grille de boutons représentant les cases
 buttons = []
@@ -26,6 +26,7 @@ def on_button_click(row, col):
         button.configure(text="🦆", font=("Arial", 25))  # Canard avec une grande taille
     elif current_text == "🦆":
         button.configure(text="", font=("Arial", 25))  # Rien avec une grande taille
+
 
 # Création des boutons représentant les cases
 for row in range(rows):
