@@ -14,12 +14,12 @@ class Board():
         for _ in range(self.size):
             row = []
             for _ in range(self.size):
-                row.append({'hidden': True, 'mine': False})
+                row.append(Cell(hidden=True, mine=False))
             self.grid.append(row)
                 
     def reveal(self, x, y):
-        self.grid[x][y]['hidden'] = False 
-        return self.grid[x][y]['mine']
+        self.grid[x][y].hidden = False 
+        return self.grid[x][y].mine
     
     def add_mines(self):
         mines_required = round((self.size ** 2) * 0.2)
@@ -27,6 +27,11 @@ class Board():
         while mines_added < mines_required:
             x = round(random()*(self.size -1))
             y = round(random()*(self.size -1))
-            if not self.grid[x][y]['mine']:
-                self.grid[x][y]['mine'] = True
+            if not self.grid[x][y].mine:
+                self.grid[x][y].mine = True
                 mines_added += 1
+                
+class Cell:
+    def __init__(self, hidden, mine):
+        self.hidden = hidden 
+        self.mine = mine

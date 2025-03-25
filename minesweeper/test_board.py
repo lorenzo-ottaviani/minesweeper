@@ -24,11 +24,11 @@ test_create_board()
 def test_reveal():
     board = Board('beginner')
     for row in board.grid:
-        for tile in row:
-            assert tile['hidden']
+        for cell in row:
+            assert cell.hidden
     is_mine = board.reveal(0, 0)
     assert is_mine == True or is_mine == False
-    assert board.grid[0][0]['hidden'] == False
+    assert board.grid[0][0].hidden == False
 
 test_reveal()
 
@@ -38,7 +38,7 @@ def test_percentage_mines():
     mine_count = 0
     for row in board.grid:
         for cell in row:
-            if cell['mine']:
+            if cell.mine:
                 mine_count += 1
     assert mine_count == round((board.size ** 2) * 0.2)
 
