@@ -1,4 +1,4 @@
-from random import random 
+from random import randint
 
 class Board():
     def __init__(self, difficulty):
@@ -25,8 +25,8 @@ class Board():
         mines_required = round((self.size ** 2) * 0.2)
         mines_added = 0
         while mines_added < mines_required:
-            x = round(random()*(self.size -1))
-            y = round(random()*(self.size -1))
+            x = round(randint(0, self.size -1))
+            y = round(randint(0, self.size -1))
             if not self.grid[x][y].mine:
                 self.grid[x][y].mine = True
                 mines_added += 1
