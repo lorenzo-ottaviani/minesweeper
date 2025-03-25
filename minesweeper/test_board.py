@@ -1,4 +1,4 @@
-from main import Duckfield
+from board import Duckfield
 
 def test_create_duckfield():
     duckfield = Duckfield('beginner')
