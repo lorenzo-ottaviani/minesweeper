@@ -32,7 +32,7 @@ def on_button_click(row, col):
 for row in range(rows):
     button_row = []
     for col in range(cols):
-        button = ctk.CTkButton(master=root, text="", width=40, height=40, command=lambda r=row, c=col: on_button_click(r, c))
+        button = ctk.CTkButton(master=root, text="", width=30, height=30, command=lambda r=row, c=col: on_button_click(r, c))
         button.grid(row=row, column=col, padx=0.5, pady=0.5)
         button_row.append(button)
     buttons.append(button_row)
