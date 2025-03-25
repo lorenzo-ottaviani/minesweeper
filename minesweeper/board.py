@@ -8,7 +8,7 @@ class Board():
         elif difficulty == 'intermediate':
             self.size = 16
         elif difficulty == 'expert':
-            self.size = 24
+            self.size = 24 # not a square!
         
         self.grid = []
         for _ in range(self.size):
@@ -27,6 +27,7 @@ class Board():
         if all_hidden:
             self.add_mines()
         return self.grid[x][y].mine
+        # empty cells reveal surrounding cells recursively
     
     def add_mines(self):
         mines_required = round((self.size ** 2) * 0.2)
@@ -37,8 +38,13 @@ class Board():
             if (not self.grid[x][y].mine) and self.grid[x][y].hidden:
                 self.grid[x][y].mine = True
                 mines_added += 1
+        # add number in surround cells
+        
+        
+    # def set_marker()
                 
 class Cell:
-    def __init__(self, hidden, mine):
+    def __init__(self, hidden, mine, marker):
         self.hidden = hidden 
         self.mine = mine
+        self.marker = marker
