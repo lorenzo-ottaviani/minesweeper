@@ -27,7 +27,7 @@ def test_reveal():
         for cell in row:
             assert cell.hidden
     is_mine = board.reveal(0, 0)
-    assert is_mine == True or is_mine == False
+    assert is_mine == False
     assert board.grid[0][0].hidden == False
 
 test_reveal()
