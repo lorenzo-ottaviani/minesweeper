@@ -8,11 +8,10 @@ class GUI(ctk.CTk):
         super().__init__()
 
         self.title("Minesweeper")
-        self.geometry("1080x900")  # Total window size
+        self.geometry("1080x900")
 
         self.configure(fg_color="#99d5ff")
 
-        # Configure rows and columns
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure((0, 1, 2), weight=1)
 
@@ -52,24 +51,24 @@ class GUI(ctk.CTk):
             Draw the intermediate frame.
             return : ∅
             """
-        intermediate_frame = ctk.CTkFrame(self, width=360, height=900)
-        intermediate_frame.grid(row=0, column=1, padx=10, pady=10)
+            intermediate_frame = ctk.CTkFrame(self, width=360, height=900)
+            intermediate_frame.grid(row=0, column=1, padx=10, pady=10)
 
-        intermediate_frame.grid_rowconfigure((0, 1, 2, 3), weight=1)
-        intermediate_frame.grid_columnconfigure(0, weight=1)
+            intermediate_frame.grid_rowconfigure((0, 1, 2, 3), weight=1)
+            intermediate_frame.grid_columnconfigure(0, weight=1)
 
-        intermediate_title = ctk.CTkLabel(intermediate_frame, text="Intermediate", font=("Arial", 24),
-                                          text_color="green")
-        intermediate_title.grid(row=0, column=1, padx=5, pady=5)
+            intermediate_title = ctk.CTkLabel(intermediate_frame, text="Intermediate", font=("Arial", 24),
+                                              text_color="green")
+            intermediate_title.grid(row=0, column=1, padx=5, pady=5)
 
-        intermediate_shape = ctk.CTkLabel(intermediate_frame, text="16 x 16", font=("Arial", 18))
-        intermediate_shape.grid(row=1, column=1, padx=5, pady=5)
+            intermediate_shape = ctk.CTkLabel(intermediate_frame, text="16 x 16", font=("Arial", 18))
+            intermediate_shape.grid(row=1, column=1, padx=5, pady=5)
 
-        intermediate_mines = ctk.CTkLabel(intermediate_frame, text=" ~ 40 mines", font=("Arial", 18))
-        intermediate_mines.grid(row=2, column=1, padx=5, pady=5)
+            intermediate_mines = ctk.CTkLabel(intermediate_frame, text=" ~ 40 mines", font=("Arial", 18))
+            intermediate_mines.grid(row=2, column=1, padx=5, pady=5)
 
-        intermediate_button = ctk.CTkButton(intermediate_frame, text="Play", command=self.start_intermediate_game)
-        intermediate_button.grid(row=3, column=1, padx=5, pady=5)
+            intermediate_button = ctk.CTkButton(intermediate_frame, text="Play", command=self.start_intermediate_game)
+            intermediate_button.grid(row=3, column=1, padx=5, pady=5)
 
         def draw_expert_frame():
             """
@@ -99,10 +98,49 @@ class GUI(ctk.CTk):
         draw_expert_frame()
 
     def start_beginner_game(self):
-        pass
+        cell_size = 50
+        cell_range = 9
+        number_of_mines = (8, 12)
+        self.draw_board_scene(cell_size, cell_range, number_of_mines)
 
     def start_intermediate_game(self):
-        pass
+        cell_size = 40
+        cell_range = 16
+        number_of_mines = (35, 45)
+        self.draw_board_scene(cell_size, cell_range, number_of_mines)
 
     def start_expert_game(self):
-        pass
+        cell_size = 30
+        cell_range = 24
+        number_of_mines = (90, 110)
+        self.draw_board_scene(cell_size, cell_range, number_of_mines)
+
+    def draw_board_scene(self, cell_size, cell_range, number_of_mines):
+        """"""
+        for widget in self.winfo_children():
+            widget.destroy()
+
+        def cell_action(row, col):
+            """"""
+            button = cells[row][col]
+            current_text = button.cget("text")
+
+            if current_text == "":
+                button.configure(text="🏴", font=("Arial", 25))
+            elif current_text == "🏴":
+                button.configure(text="🦆", font=("Arial", 25))
+            elif current_text == "🦆":
+                button.configure(text="", font=("Arial", 25))
+
+        board_frame = ctk.CTkFrame(self, width=360, height=900, bg_color="white")
+        board_frame.grid(row=0, column=1)
+
+        cells = []
+        for row in range(cell_range):
+            cells_row = []
+            for col in range(cell_range):
+                cell = ctk.CTkButton(board_frame, text="", width=cell_size, height=cell_size,
+                                     command=lambda r=row, c=col: cell_action(r, c))
+                cell.grid(row=row, column=col, padx=0.5, pady=0.5)
+                cells_row.append(cell)
+            cells.append(cells_row)
