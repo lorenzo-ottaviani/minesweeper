@@ -41,7 +41,7 @@ class Board():
         # add number in surround cells
            
     def set_marker(self, x, y):
-        '''method for when the user right-clicks to cycle through the markers from flag > ? > None'''
+        '''method to cycle through the marker state from flag > ? > None'''
         cell = self.grid[x][y]
         if cell.hidden:
             if cell.marker is None:
