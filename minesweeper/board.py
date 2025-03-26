@@ -38,7 +38,10 @@ class Board():
             if (not self.grid[x][y].mine) and self.grid[x][y].hidden:
                 self.grid[x][y].mine = True
                 mines_added += 1
-        # add number in surround cells
+                
+                for x2, y2 in [(x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)]:
+                    if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
+                        self.grid[x2][y2].number += 1
            
     def set_marker(self, x, y):
         '''method to cycle through the marker states from flag > ? > None'''
@@ -56,3 +59,4 @@ class Cell:
         self.hidden = hidden 
         self.mine = mine
         self.marker = marker
+        self.number = 0

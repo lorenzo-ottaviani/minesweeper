@@ -39,6 +39,16 @@ class TestBoard(unittest.TestCase):
                 if cell.mine:
                     mine_count += 1
         assert mine_count == round((board.size ** 2) * 0.2)
+        
+    def test_augment_number(self):
+        board = Board('beginner')
+        board.add_mines()
+        for x, row in enumerate(board.grid):
+            for y, cell in enumerate(row):
+                if cell.mine:
+                    for x2, y2 in [(x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)]:
+                        if x2 >= 0 and y2 >= 0 and x2 < board.size and y2 < board.size:
+                            assert board.grid[x2][y2].number >= 1
 
     def test_set_marker(self):
         board = Board('beginner')
