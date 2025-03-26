@@ -8,7 +8,7 @@ class Board():
         elif difficulty == 'intermediate':
             self.size = 16
         elif difficulty == 'expert':
-            self.size = 24 # not a square!
+            self.size = 24 
         
         self.grid = []
         for _ in range(self.size):
@@ -39,12 +39,20 @@ class Board():
                 self.grid[x][y].mine = True
                 mines_added += 1
         # add number in surround cells
-        
-        
-    # def set_marker()
+           
+    def set_marker(self, x, y):
+        '''method for when the user right-clicks to cycle through the markers from flag > ? > None'''
+        cell = self.grid[x][y]
+        if cell.hidden:
+            if cell.marker is None:
+                cell.marker = 'flag'
+            elif cell.marker == 'flag':
+                cell.marker = '?'
+            elif cell.marker == '?':
+                cell.marker = None
                 
 class Cell:
-    def __init__(self, hidden, mine, marker):
+    def __init__(self, hidden, mine, marker=None):
         self.hidden = hidden 
         self.mine = mine
         self.marker = marker
