@@ -18,16 +18,23 @@ class Board():
             self.grid.append(row)
                 
     def reveal(self, x, y):
-        all_hidden = True
-        for row in self.grid:
-            for cell in row:
-                if cell.hidden == False:
-                    all_hidden = False
-        self.grid[x][y].hidden = False 
-        if all_hidden:
-            self.add_mines()
+        if self.grid[x][y].hidden:
+            all_hidden = True
+            for row in self.grid:
+                for cell in row:
+                    if cell.hidden == False:
+                        all_hidden = False
+            if all_hidden:
+                self.add_mines()
+            
+            for x2, y2 in [(x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)]:
+                if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
+                    if (not self.grid[x2][y2].mine) and self.grid[x2][y2].number == 0:
+                        self.reveal(x2, y2)
+            
+            self.grid[x][y].hidden = False 
+                                
         return self.grid[x][y].mine
-        # empty cells reveal surrounding cells recursively
     
     def add_mines(self):
         mines_required = round((self.size ** 2) * 0.2)
