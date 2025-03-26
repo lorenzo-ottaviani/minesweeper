@@ -15,11 +15,11 @@ class GUI(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure((0, 1, 2), weight=1)
 
-        self.draw_welcome_scene()
+        self.draw_welcome_screen()
 
-    def draw_welcome_scene(self):
+    def draw_welcome_screen(self):
         """
-        Draw the welcome scene screen.
+        Draw the welcome screen.
         return : ∅
         """
 
@@ -101,21 +101,21 @@ class GUI(ctk.CTk):
         cell_size = 50
         cell_range = 9
         number_of_mines = (8, 12)
-        self.draw_board_scene(cell_size, cell_range, number_of_mines)
+        self.draw_board_screen(cell_size, cell_range, number_of_mines)
 
     def start_intermediate_game(self):
         cell_size = 40
         cell_range = 16
         number_of_mines = (35, 45)
-        self.draw_board_scene(cell_size, cell_range, number_of_mines)
+        self.draw_board_screen(cell_size, cell_range, number_of_mines)
 
     def start_expert_game(self):
-        cell_size = 30
+        cell_size = 35
         cell_range = 24
         number_of_mines = (90, 110)
-        self.draw_board_scene(cell_size, cell_range, number_of_mines)
+        self.draw_board_screen(cell_size, cell_range, number_of_mines)
 
-    def draw_board_scene(self, cell_size, cell_range, number_of_mines):
+    def draw_board_screen(self, cell_size, cell_range, number_of_mines):
         """"""
         for widget in self.winfo_children():
             widget.destroy()
@@ -126,11 +126,11 @@ class GUI(ctk.CTk):
             current_text = button.cget("text")
 
             if current_text == "":
-                button.configure(text="🏴", font=("Arial", 25))
+                button.configure(text="🏴", font=("Arial", 18))
             elif current_text == "🏴":
-                button.configure(text="🦆", font=("Arial", 25))
+                button.configure(text="🦆", font=("Arial", 18))
             elif current_text == "🦆":
-                button.configure(text="", font=("Arial", 25))
+                button.configure(text="", font=("Arial", 18))
 
         board_frame = ctk.CTkFrame(self, width=360, height=900, bg_color="white")
         board_frame.grid(row=0, column=1)
