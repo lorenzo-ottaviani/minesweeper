@@ -43,3 +43,14 @@ def test_percentage_mines():
     assert mine_count == round((board.size ** 2) * 0.2)
 
 test_percentage_mines()
+
+def test_set_marker():
+    board = Board('beginner')
+    board.set_marker(0,0)
+    assert board.grid[0][0].marker == 'flag'
+    board.set_marker(0,0)
+    assert board.grid[0][0].marker == '?'
+    board.set_marker(0,0)
+    assert board.grid[0][0].marker == None
+    
+test_set_marker()
