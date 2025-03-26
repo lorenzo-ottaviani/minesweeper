@@ -28,7 +28,7 @@ class TestBoard(unittest.TestCase):
                 assert cell.hidden
         is_mine = board.reveal(0, 0)
         assert is_mine == False
-        assert board.grid[0][0].hidden == False
+        assert board.grid[0][0].hidden == False, 'cell is still hidden'
 
     def test_percentage_mines(self):
         board = Board('beginner')

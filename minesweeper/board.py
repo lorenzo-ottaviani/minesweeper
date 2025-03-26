@@ -1,5 +1,8 @@
 from random import randint
 
+def surrounding_cells(x,y):
+    return [(x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)]
+    
 class Board():
     def __init__(self, difficulty):
         self.difficulty = difficulty
@@ -18,23 +21,24 @@ class Board():
             self.grid.append(row)
                 
     def reveal(self, x, y):
-        if self.grid[x][y].hidden:
+        cell = self.grid[x][y]
+        if cell.hidden:
             all_hidden = True
             for row in self.grid:
-                for cell in row:
-                    if cell.hidden == False:
+                for c in row:
+                    if c.hidden == False:
                         all_hidden = False
             if all_hidden:
                 self.add_mines()
             
-            for x2, y2 in [(x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)]:
+            for x2, y2 in surrounding_cells(x,y):
                 if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
                     if (not self.grid[x2][y2].mine) and self.grid[x2][y2].number == 0:
                         self.reveal(x2, y2)
             
-            self.grid[x][y].hidden = False 
+            cell.hidden = False 
                                 
-        return self.grid[x][y].mine
+        return cell.mine
     
     def add_mines(self):
         mines_required = round((self.size ** 2) * 0.2)
@@ -46,7 +50,7 @@ class Board():
                 self.grid[x][y].mine = True
                 mines_added += 1
                 
-                for x2, y2 in [(x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)]:
+                for x2, y2 in surrounding_cells(x,y):
                     if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
                         self.grid[x2][y2].number += 1
            
@@ -67,3 +71,5 @@ class Cell:
         self.mine = mine
         self.marker = marker
         self.number = 0
+        
+    
