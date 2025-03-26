@@ -1,7 +1,9 @@
 from random import randint
 
 def surrounding_cells(x,y):
-    return [(x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1)]
+    return [(x-1, y-1), (x, y-1), (x+1, y-1),
+            (x-1, y),               (x+1, y), 
+            (x-1, y+1), (x, y+1), (x+1, y+1)]
     
 class Board():
     def __init__(self, difficulty):
@@ -71,5 +73,3 @@ class Cell:
         self.mine = mine
         self.marker = marker
         self.number = 0
-        
-    
