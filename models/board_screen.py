@@ -42,10 +42,10 @@ class BoardScreen(ctk.CTkFrame):
         def cell_right_click_action(event, row, col):
             button = cells[row][col]
             current_text = button.cget("text")
-            if current_text == "":
+            if current_text == "💣":
                 button.configure(text="🚩", font=("Arial", 18))
             elif current_text == "🚩":
-                button.configure(text="", font=("Arial", 18))
+                button.configure(text="💣", font=("Arial", 18))
 
         board_frame = ctk.CTkFrame(self, width=360, height=900, bg_color="white")
         board_frame.grid(row=0, column=1)
