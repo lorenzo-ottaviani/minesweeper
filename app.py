@@ -1,6 +1,6 @@
 """
 Authors : Lorenzo OTTAVIANI, Morgane ROSSI et Leila WILDE.
-Date : 26/03/2025 09h43
+Date : 27/03/2025 23h09
 Aim of the program :
     Execute a minesweeper game using Custom Tkinter.
 Inputs : ∅
