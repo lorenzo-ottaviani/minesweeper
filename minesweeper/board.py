@@ -4,6 +4,13 @@ def surrounding_cells(x,y):
     return [(x-1, y-1), (x, y-1), (x+1, y-1),
             (x-1, y),               (x+1, y), 
             (x-1, y+1), (x, y+1), (x+1, y+1)]
+
+class Cell:
+    def __init__(self, hidden, mine, marker=None):
+        self.hidden = hidden 
+        self.mine = mine
+        self.marker = marker
+        self.number = 0
     
 class Board():
     def __init__(self, difficulty):
@@ -66,10 +73,3 @@ class Board():
                 cell.marker = '?'
             elif cell.marker == '?':
                 cell.marker = None
-                
-class Cell:
-    def __init__(self, hidden, mine, marker=None):
-        self.hidden = hidden 
-        self.mine = mine
-        self.marker = marker
-        self.number = 0
