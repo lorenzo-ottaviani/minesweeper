@@ -13,7 +13,7 @@ class Timer:
     def update(self):
         if self.running:
             timer = time.time() - self.start_time
-            self.label.config(text=f'Time: {timer}')
+            self.label.config(text=f'Timer: {timer}')
                
     def stop(self):
         self.running = False

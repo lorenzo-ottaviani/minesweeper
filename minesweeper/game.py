@@ -1,4 +1,4 @@
-from board import Board, Cell
+from board import Board
 import time
 
 class Game:
