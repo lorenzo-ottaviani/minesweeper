@@ -53,8 +53,8 @@ class Board():
         mines_required = round((self.size ** 2) * 0.2)
         mines_added = 0
         while mines_added < mines_required:
-            x = round(randint(0, self.size -1))
-            y = round(randint(0, self.size -1))
+            x = randint(0, self.size -1)
+            y = randint(0, self.size -1)
             if (not self.grid[x][y].mine) and self.grid[x][y].hidden:
                 self.grid[x][y].mine = True
                 mines_added += 1
