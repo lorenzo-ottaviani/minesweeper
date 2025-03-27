@@ -21,6 +21,7 @@ class Game:
             for cell in row:
                 if not cell.mine and cell.hidden:
                     return False
+        return True
 
     def end_game(self):
         self.game_over = True
