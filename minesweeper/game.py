@@ -6,11 +6,12 @@ class Game:
         self.difficulty = difficulty
         self.board = Board(difficulty)
         self.game_over = False
-        self.timer = None
+        self.start_time = None
+        self.time_passed = 0
     
     def start_game(self):
         self.game_over = False
-        pass
+        self.start_time = time.time() # Returns time in seconds since epoch as float
         
     def check_win(self):
         '''
@@ -23,4 +24,5 @@ class Game:
 
     def end_game(self):
         self.game_over = True
-        pass
+        self.time_passed = time.time() - self.start_time
+        
