@@ -12,8 +12,8 @@ class Timer:
     
     def update(self):
         if self.running:
-            time_passed = time.time() - self.start_time
-            self.label.config(text=f'Time: {time_passed}')
-                
+            timer = time.time() - self.start_time
+            self.label.config(text=f'Time: {timer}')
+               
     def stop(self):
         self.running = False
