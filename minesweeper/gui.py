@@ -26,6 +26,9 @@ class GUI(ctk.CTk):
         pass
     
     def reveal_mines(self):
+        '''
+        Reveal all mines on the board after game over
+        '''
         pass
     
     def restart(self):
