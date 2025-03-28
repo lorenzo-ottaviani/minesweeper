@@ -32,7 +32,7 @@ class TestBoard(unittest.TestCase):
 
     def test_percentage_mines(self):
         board = Board('beginner')
-        board.add_mines()
+        board.add_mines(exclude_x=0, exclude_y=0)
         mine_count = 0
         for row in board.grid:
             for cell in row:
@@ -42,7 +42,7 @@ class TestBoard(unittest.TestCase):
         
     def test_augment_number(self):
         board = Board('beginner')
-        board.add_mines()
+        board.add_mines(exclude_x=0, exclude_y=0)
         for x, row in enumerate(board.grid):
             for y, cell in enumerate(row):
                 if cell.mine:
