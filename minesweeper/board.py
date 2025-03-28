@@ -60,6 +60,9 @@ class Board():
             x = randint(0, self.size -1)
             y = randint(0, self.size -1)
             if (not self.grid[x][y].mine) and self.grid[x][y].hidden:
+                # exclude the first clicked cell
+                if x == exclude_x and y == exclude_y:
+                    continue
                 self.grid[x][y].mine = True
                 mines_added += 1
                 
