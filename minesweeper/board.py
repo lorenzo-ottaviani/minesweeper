@@ -37,7 +37,7 @@ class Board():
             all_hidden = True
             for row in self.grid:
                 for c in row:
-                    if c.hidden == False:
+                    if not c.hidden:
                         all_hidden = False
             if all_hidden:
                 self.add_mines()
