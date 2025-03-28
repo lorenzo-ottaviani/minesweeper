@@ -108,6 +108,7 @@ class GUI(tk.Tk):
     
     def update_buttons(self):
         '''Update buttons to match the state of their corresponding cell'''
+
         size = self.game.board.size
         for x in range(size):
             for y in range(size):
@@ -131,6 +132,13 @@ class GUI(tk.Tk):
     
     def reveal_mines(self):
         '''Reveal all mines on the board after game over'''
+        size = self.game.board.size
+        for x in range(size):
+            for y in range(size):
+                cell = self.game.board.grid[x][y]
+                if cell.mine:
+                    btn = self.buttons[x][y]
+                    btn.configure(text="M", bg="red")
     
     def restart(self):
         self.welcome_screen() 
