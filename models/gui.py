@@ -17,9 +17,10 @@ class GUI(ctk.CTk):
         self.welcome_screen = WelcomeScreen(self, self.switch_to_board_screen)
         self.welcome_screen.place(relx=0.5, rely=0.5, anchor="center")
 
-    def switch_to_board_screen(self, cell_size, cell_range, number_of_mines):
+    def switch_to_board_screen(self, difficulty, cell_size, cell_range, number_of_mines):
         """
         Switch from the welcome screen to the board screen.
+        :param difficulty: Game difficulty.
         :param cell_size: Size of a board cell.
         :param cell_range: Number of cells per row and column.
         :param number_of_mines: Number of mines in the choose difficulty.
@@ -28,5 +29,5 @@ class GUI(ctk.CTk):
         for widget in self.winfo_children():
             widget.destroy()
 
-        board_screen = BoardScreen(self, cell_size, cell_range, number_of_mines)
+        board_screen = BoardScreen(self, difficulty, cell_size, cell_range, number_of_mines)
         board_screen.place(relx=0.5, rely=0.5, anchor="center")

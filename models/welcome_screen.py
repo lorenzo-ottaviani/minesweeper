@@ -95,19 +95,25 @@ class WelcomeScreen(ctk.CTkFrame):
         draw_expert_frame()
 
     def start_beginner_game(self):
+        """"""
+        difficulty = "beginner"
         cell_size = 50
         cell_range = 9
         number_of_mines = (8, 12)
-        self.switch(cell_size, cell_range, number_of_mines)
+        self.switch(difficulty, cell_size, cell_range, number_of_mines)
 
     def start_intermediate_game(self):
+        """"""
+        difficulty = "intermediate"
         cell_size = 40
         cell_range = 16
         number_of_mines = (35, 45)
-        self.switch(cell_size, cell_range, number_of_mines)
+        self.switch(difficulty, cell_size, cell_range, number_of_mines)
 
     def start_expert_game(self):
+        """"""
+        difficulty = "expert"
         cell_size = 35
         cell_range = 24
         number_of_mines = (90, 110)
-        self.switch(cell_size, cell_range, number_of_mines)
+        self.switch(difficulty, cell_size, cell_range, number_of_mines)

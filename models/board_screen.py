@@ -1,12 +1,15 @@
 import customtkinter as ctk
 from random import randint
 
+from .board import Board
+
 
 class BoardScreen(ctk.CTkFrame):
     """ Class to manage the board screen."""
 
-    def __init__(self, master, cell_size, cell_range, number_of_mines):
+    def __init__(self, master, difficulty, cell_size, cell_range, number_of_mines):
         super().__init__(master)
+        self.difficulty = difficulty
         self.cell_size = cell_size
         self.cell_range = cell_range
         self.number_of_mines = number_of_mines
@@ -17,6 +20,10 @@ class BoardScreen(ctk.CTkFrame):
 
         self.cells = []
 
+        # Draw the board
+        self.board_frame = ctk.CTkFrame(self, width=360, height=900, bg_color="white")
+        self.board_frame.grid(row=0, column=1)
+
         self.draw_board_screen()
 
     def draw_board_screen(self):
@@ -25,25 +32,21 @@ class BoardScreen(ctk.CTkFrame):
         :return: ∅
         """
 
-        def generate_mines(cell_range, number_of_mines):
-            """"""
-            mines = set()
-            while len(mines) < number_of_mines:
-                mine = (randint(0, cell_range - 1), randint(0, cell_range - 1))
-                mines.add(mine)
-            return mines
-
-        mines = generate_mines(self.cell_range, randint(*self.number_of_mines))
-
-        # Draw the board
-        board_frame = ctk.CTkFrame(self, width=360, height=900, bg_color="white")
-        board_frame.grid(row=0, column=1)
+        # def generate_mines(cell_range, number_of_mines):
+        #     """"""
+        #     mines = set()
+        #     while len(mines) < number_of_mines:
+        #         mine = (randint(0, cell_range - 1), randint(0, cell_range - 1))
+        #         mines.add(mine)
+        #     return mines
+        #
+        # mines = generate_mines(self.cell_range, randint(*self.number_of_mines))
 
         # Draw the cells into the board
         for row in range(self.cell_range):
             cells_row = []
             for col in range(self.cell_range):
-                cell = ctk.CTkButton(board_frame, text="", width=self.cell_size, height=self.cell_size)
+                cell = ctk.CTkButton(self.board_frame, text="", width=self.cell_size, height=self.cell_size)
                 cell.bind("<Button-1>", lambda event, r=row, c=col: self.cell_left_click_action(event, r, c))
                 cell.bind("<Button-3>", lambda event, r=row, c=col: self.cell_right_click_action(event, r, c))
 
@@ -60,13 +63,30 @@ class BoardScreen(ctk.CTkFrame):
         :return: ∅
         """
         cell_button = self.cells[row][col]
+        label_width = cell_button.winfo_width()
+        label_height = cell_button.winfo_height()
+        cell_button.destroy()
 
-        if self.first_click:
-            cell_button.destroy()
-            # Mine draw call
-            self.first_click = False
+        board = Board(self.difficulty)
+        board.reveal(row, col)
+
+        matrix_cell = board.matrix[row][col]
+        if matrix_cell.mine:
+            label = ctk.CTkLabel(self.board_frame, text="💣", width=label_width, height=label_height,
+                                 fg_color="white", font=("Arial", 24))
         else:
-            cell_button.destroy()
+            label = ctk.CTkLabel(self.board_frame, text=matrix_cell.number, width=label_width, height=label_height,
+                                 fg_color="white", font=("Arial", 24))
+
+        label.grid(row=row, column=col, padx=0.5, pady=0.5)
+
+
+        # if self.first_click:
+        #     cell_button.destroy()
+        #     # Mine draw call
+        #     self.first_click = False
+        # else:
+        #     cell_button.destroy()
             # Check if mine
             # if mine:
             # end == True
@@ -91,6 +111,7 @@ class BoardScreen(ctk.CTkFrame):
         """
         cell = self.cells[row][col]
         current_text = cell.cget("text")
+        print(current_text)
 
         icons = ["🏴", "💣", "🦆", "🚩", "❓"]
 
