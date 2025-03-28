@@ -7,7 +7,7 @@ def surrounding_cells(x,y):
             (x-1, y+1), (x, y+1), (x+1, y+1)]
 
 class Cell:
-    def __init__(self, hidden, mine, marker=None):
+    def __init__(self, hidden=True, mine=False, marker=None):
         self.hidden = hidden 
         self.mine = mine
         self.marker = marker
@@ -27,7 +27,7 @@ class Board():
         for _ in range(self.size):
             row = []
             for _ in range(self.size):
-                row.append(Cell(hidden=True, mine=False))
+                row.append(Cell())
             self.grid.append(row)
                 
     def reveal(self, x, y):
