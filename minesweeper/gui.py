@@ -141,4 +141,7 @@ class GUI(tk.Tk):
                     btn.configure(text="M", bg="red")
     
     def restart(self):
+        '''Restart the game by returning to the welcome screen'''
+        self.timer.stop()
+        self.clear_screen()
         self.welcome_screen() 
