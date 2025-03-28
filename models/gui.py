@@ -2,6 +2,7 @@ import customtkinter as ctk
 from .board_screen import BoardScreen
 from .welcome_screen import WelcomeScreen
 
+
 class GUI(ctk.CTk):
     """ Graphical User Interface (GUI) of the program. """
 

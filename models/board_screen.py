@@ -13,6 +13,7 @@ class BoardScreen(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         self.configure(fg_color="white")
+        self.first_click = True
 
         self.cells = []
 
@@ -32,11 +33,13 @@ class BoardScreen(ctk.CTkFrame):
                 mines.add(mine)
             return mines
 
+        mines = generate_mines(self.cell_range, randint(*self.number_of_mines))
+
+        # Draw the board
         board_frame = ctk.CTkFrame(self, width=360, height=900, bg_color="white")
         board_frame.grid(row=0, column=1)
 
-        mines = generate_mines(self.cell_range, randint(*self.number_of_mines))
-
+        # Draw the cells into the board
         for row in range(self.cell_range):
             cells_row = []
             for col in range(self.cell_range):
@@ -56,15 +59,27 @@ class BoardScreen(ctk.CTkFrame):
         :param col: The board columns.
         :return: ∅
         """
-        button = self.cells[row][col]
-        current_text = button.cget("text")
+        cell_button = self.cells[row][col]
 
-        if current_text == "":
-            button.configure(text="💣", font=("Arial", 18))
-        elif current_text == "💣":
-            button.configure(text="🦆", font=("Arial", 18))
-        elif current_text == "🦆":
-            button.configure(text="", font=("Arial", 18))
+        if self.first_click:
+            cell_button.destroy()
+            # Mine draw call
+            self.first_click = False
+        else:
+            cell_button.destroy()
+            # Check if mine
+            # if mine:
+            # end == True
+            # victory == False "You loose"
+
+        # current_text = cell_button.cget("text")
+        #
+        # if current_text == "":
+        #     cell_button.configure(text="💣", font=("Arial", 18))
+        # elif current_text == "💣":
+        #     cell_button.configure(text="🦆", font=("Arial", 18))
+        # elif current_text == "🦆":
+        #     cell_button.configure(text="", font=("Arial", 18))
 
     def cell_right_click_action(self, event, row, col):
         """
@@ -74,14 +89,14 @@ class BoardScreen(ctk.CTkFrame):
         :param col: The board columns.
         :return: ∅
         """
-        button = self.cells[row][col]
-        current_text = button.cget("text")
+        cell = self.cells[row][col]
+        current_text = cell.cget("text")
 
         icons = ["🏴", "💣", "🦆", "🚩", "❓"]
 
         if current_text == "":
-            button.configure(text="🏴", font=("Arial", 18))
+            cell.configure(text="🏴", font=("Arial", 18))
         elif current_text == "🏴":
-            button.configure(text="❓", font=("Arial", 18))
+            cell.configure(text="❓", font=("Arial", 18))
         elif current_text == "❓":
-            button.configure(text="", font=("Arial", 18))
+            cell.configure(text="", font=("Arial", 18))
