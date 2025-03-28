@@ -62,7 +62,24 @@ class GUI(tk.Tk):
     
     def display_board(self):
         '''Display game board as a grid of buttons'''
-        pass
+        board_frame = tk.Frame(self)
+        board_frame.pack(pady=5)
+        size = self.game.board.size
+        self.buttons = [[None for _ in range(size)] for _ in range(size)]
+        for x in range(size):
+            for y in range(size):
+                btn = tk.Button(
+                    board_frame,
+                    width=3,
+                    height=1,
+                    text="",
+                    font=("Arial", 12),
+                    command=lambda x=x, y=y: self.left_click(x, y)
+                )
+                btn.grid(row=x, column=y)
+                # Bind right-click event.
+                btn.bind("<Button-3>", lambda event, x=x, y=y: self.right_click(x, y))
+                self.buttons[x][y] = btn
     
     def manage_left_click(self, difficulty):
         self.board = Board(difficulty)
