@@ -41,7 +41,7 @@ class Board():
                     if not c.hidden:
                         all_hidden = False
             if all_hidden:
-                self.add_mines(exclude=(x, y))
+                self.add_mines(exclude_x=x, exclude_y=y)
             
             for x2, y2 in surrounding_cells(x,y):
                 if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
@@ -52,7 +52,7 @@ class Board():
                                 
         return cell.mine
     
-    def add_mines(self):
+    def add_mines(self, exclude_x, exclude_y):
         '''Add mines to the board randomly and give values to surrounding cells'''
         mines_required = round((self.size ** 2) * 0.2)
         mines_added = 0
