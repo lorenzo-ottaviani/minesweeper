@@ -43,10 +43,13 @@ class Board():
             if all_hidden:
                 self.add_mines(exclude_x=x, exclude_y=y)
             
-            for x2, y2 in surrounding_cells(x,y):
-                if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
-                    if (not self.grid[x2][y2].mine) and self.grid[x2][y2].number == 0:
-                        self.reveal(x2, y2)
+            # if cell is not a mine and is 0 then reveal surrounding cells
+            if not cell.mine and cell.number == 0:
+                for x2, y2 in surrounding_cells(x,y):
+                    if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
+                        # Only reveal if still hidden, and if no mine. (recursive)
+                        if not cell.mine and cell.number == 0:
+                            self.reveal(x2, y2)
             
             cell.hidden = False 
                                 
