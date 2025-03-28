@@ -81,18 +81,53 @@ class GUI(tk.Tk):
                 btn.bind("<Button-3>", lambda event, x=x, y=y: self.right_click(x, y))
                 self.buttons[x][y] = btn
     
-    def manage_left_click(self, difficulty):
-        self.board = Board(difficulty)
-        self.board.reveal()
+    def left_click(self, x, y):
+        '''Handle left-click on the cell at (x, y)'''
+        if self.game.game_over:
+            return
+        mine_hit = self.game.board.reveal(x, y)
+        self.update_buttons()
+        if mine_hit:
+            self.timer.stop()
+            self.game.end_game()
+            self.reveal_mines()
+            error_label = tk.Label(self, text="Game Over!", fg="red", font=("Arial", 16))
+            error_label.pack(pady=10)
+        elif self.game.check_win():
+            self.timer.stop()
+            self.game.end_game()
+            win_label = tk.Label(self, text="Congratulations! You won!", fg="green", font=("Arial", 16))
+            win_label.pack(pady=10)
     
-    def manage_right_click(self, difficulty):
-        self.board = Board(difficulty)
-        self.board.set_marker()
+    def right_click(self, x, y):
+        '''Handle right-click on the cell at (x, y)'''
+        if self.game.game_over:
+            return
+        self.game.board.set_marker(x, y)
+        self.update_buttons()
     
     def update_buttons(self):
         '''Update buttons to match the state of their corresponding cell'''
-        self.button.destroy()
-        self.cell.label()
+        size = self.game.board.size
+        for x in range(size):
+            for y in range(size):
+                cell = self.game.board.grid[x][y]
+                btn = self.buttons[x][y]
+                if not cell.hidden:
+                    if cell.mine:
+                        btn.configure(text="M", bg="red")
+                    elif cell.number > 0:
+                        btn.configure(text=str(cell.number), bg="lightgrey")
+                    else:
+                        btn.configure(text="", bg="white")
+                else:
+                    # Still hidden: show marker if any.
+                    if cell.marker == 'flag':
+                        btn.configure(text="F", bg="orange")
+                    elif cell.marker == '?':
+                        btn.configure(text="?", bg="yellow")
+                    else:
+                        btn.configure(text="", bg="darkgrey")
     
     def reveal_mines(self):
         '''Reveal all mines on the board after game over'''
