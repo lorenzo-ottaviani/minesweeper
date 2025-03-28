@@ -24,19 +24,21 @@ class GUI(ctk.CTk):
         '''Display game board as a grid of buttons'''
         pass
     
-    def manage_left_click(self):
-        pass
+    def manage_left_click(self, difficulty):
+        self.board = Board(difficulty)
+        self.board.reveal()
     
-    def manage_right_click(self):
-        pass
+    def manage_right_click(self, difficulty):
+        self.board = Board(difficulty)
+        self.board.set_marker()
     
     def update_buttons(self):
         '''Update buttons to match the state of their corresponding cell'''
-        pass
+        self.button.destroy()
+        self.cell.label()
     
     def reveal_mines(self):
         '''Reveal all mines on the board after game over'''
-        pass
     
     def restart(self):
         self.welcome_screen() 
