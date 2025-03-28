@@ -1,4 +1,4 @@
-from board import Board, Cell
+from board import Board
 import time
 
 class Game:
@@ -11,18 +11,16 @@ class Game:
     
     def start_game(self):
         self.game_over = False
-        self.start_time = time.time() # Returns time in seconds since epoch as float
+        self.start_time = time.time() 
         
     def check_win(self):
-        '''
-        Player wins when all the cells except the mines are revealed
-        '''
+        '''Return True if all hidden cells except mines are revealed'''
         for row in self.board.grid:
             for cell in row:
                 if not cell.mine and cell.hidden:
                     return False
+        return True
 
     def end_game(self):
         self.game_over = True
         self.time_passed = time.time() - self.start_time
-        
