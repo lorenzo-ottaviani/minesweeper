@@ -33,14 +33,15 @@ class Board():
     def reveal(self, x, y):
         '''Reveal a hidden cell and recusively reveal empty/zero value surrounding cells. Return True if mine'''
         cell = self.grid[x][y]
+        # on first reveal, if all cells are hidden, then set-up mines randomly in grid
         if cell.hidden:
             all_hidden = True
             for row in self.grid:
                 for c in row:
-                    if c.hidden == False:
+                    if not c.hidden:
                         all_hidden = False
             if all_hidden:
-                self.add_mines()
+                self.add_mines(exclude_x=x, exclude_y=y)
             
             for x2, y2 in surrounding_cells(x,y):
                 if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
@@ -51,7 +52,7 @@ class Board():
                                 
         return cell.mine
     
-    def add_mines(self):
+    def add_mines(self, exclude_x, exclude_y):
         '''Add mines to the board randomly and give values to surrounding cells'''
         mines_required = round((self.size ** 2) * 0.2)
         mines_added = 0
@@ -59,6 +60,9 @@ class Board():
             x = randint(0, self.size -1)
             y = randint(0, self.size -1)
             if (not self.grid[x][y].mine) and self.grid[x][y].hidden:
+                # exclude the first clicked cell
+                if x == exclude_x and y == exclude_y:
+                    continue
                 self.grid[x][y].mine = True
                 mines_added += 1
                 
