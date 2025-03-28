@@ -31,6 +31,7 @@ class Board():
             self.grid.append(row)
                 
     def reveal(self, x, y):
+        '''Reveal a hidden cell and recusively reveal empty/zero value surrounding cells. Return True if mine'''
         cell = self.grid[x][y]
         if cell.hidden:
             all_hidden = True
@@ -51,6 +52,7 @@ class Board():
         return cell.mine
     
     def add_mines(self):
+        '''Add mines to the board randomly and give values to surrounding cells'''
         mines_required = round((self.size ** 2) * 0.2)
         mines_added = 0
         while mines_added < mines_required:
@@ -65,7 +67,7 @@ class Board():
                         self.grid[x2][y2].number += 1
            
     def set_marker(self, x, y):
-        '''method to cycle through the marker states from flag > ? > None'''
+        '''Cycle through a hidden cell's marker states from None -> flag -> ? -> None'''
         cell = self.grid[x][y]
         if cell.hidden:
             if cell.marker is None:
