@@ -39,4 +39,4 @@ class GUI(ctk.CTk):
         pass
     
     def restart(self):
-        pass  
+        self.welcome_screen() 

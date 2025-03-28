@@ -24,4 +24,3 @@ class Game:
     def end_game(self):
         self.game_over = True
         self.time_passed = time.time() - self.start_time
-        
