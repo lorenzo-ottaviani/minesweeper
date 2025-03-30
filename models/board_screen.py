@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from random import randint
 
 from .board import Board
 
@@ -19,6 +18,7 @@ class BoardScreen(ctk.CTkFrame):
         self.first_click = True
 
         self.cells = []
+        self.board = Board(self.difficulty)
 
         # Draw the board
         self.board_frame = ctk.CTkFrame(self, width=360, height=900, bg_color="white")
@@ -31,16 +31,6 @@ class BoardScreen(ctk.CTkFrame):
         Draw the board screen.
         :return: ∅
         """
-
-        # def generate_mines(cell_range, number_of_mines):
-        #     """"""
-        #     mines = set()
-        #     while len(mines) < number_of_mines:
-        #         mine = (randint(0, cell_range - 1), randint(0, cell_range - 1))
-        #         mines.add(mine)
-        #     return mines
-        #
-        # mines = generate_mines(self.cell_range, randint(*self.number_of_mines))
 
         # Draw the cells into the board
         for row in range(self.cell_range):
@@ -67,39 +57,15 @@ class BoardScreen(ctk.CTkFrame):
         label_height = cell_button.winfo_height()
         cell_button.destroy()
 
-        board = Board(self.difficulty)
-        board.reveal(row, col)
+        self.board.reveal(row, col)
 
-        matrix_cell = board.matrix[row][col]
+        matrix_cell = self.board.matrix[row][col]
         if matrix_cell.mine:
-            label = ctk.CTkLabel(self.board_frame, text="💣", width=label_width, height=label_height,
-                                 fg_color="white", font=("Arial", 24))
+            self.reveal_all_the_board(self.board, label_width, label_height)
         else:
             label = ctk.CTkLabel(self.board_frame, text=matrix_cell.number, width=label_width, height=label_height,
                                  fg_color="white", font=("Arial", 24))
-
-        label.grid(row=row, column=col, padx=0.5, pady=0.5)
-
-
-        # if self.first_click:
-        #     cell_button.destroy()
-        #     # Mine draw call
-        #     self.first_click = False
-        # else:
-        #     cell_button.destroy()
-            # Check if mine
-            # if mine:
-            # end == True
-            # victory == False "You loose"
-
-        # current_text = cell_button.cget("text")
-        #
-        # if current_text == "":
-        #     cell_button.configure(text="💣", font=("Arial", 18))
-        # elif current_text == "💣":
-        #     cell_button.configure(text="🦆", font=("Arial", 18))
-        # elif current_text == "🦆":
-        #     cell_button.configure(text="", font=("Arial", 18))
+            label.grid(row=row, column=col, padx=0.5, pady=0.5)
 
     def cell_right_click_action(self, event, row, col):
         """
@@ -111,7 +77,7 @@ class BoardScreen(ctk.CTkFrame):
         """
         cell = self.cells[row][col]
         current_text = cell.cget("text")
-        print(current_text)
+        print(f"Current text: {current_text}")
 
         icons = ["🏴", "💣", "🦆", "🚩", "❓"]
 
@@ -121,3 +87,29 @@ class BoardScreen(ctk.CTkFrame):
             cell.configure(text="❓", font=("Arial", 18))
         elif current_text == "❓":
             cell.configure(text="", font=("Arial", 18))
+
+    def reveal_all_the_board(self, board, label_width, label_height):
+        """
+        Reveal all the cells when a mine is clicked.
+        :param board: The board object.
+        :param label_width: The width of the label.
+        :param label_height: The height of the label.
+        :return: ∅
+        """
+        # Destroy all the cell buttons
+        for cell_row in self.cells:
+            for cell_button in cell_row:
+                cell_button.destroy()
+
+        # Reveal the content of the cells
+        for row_index in range(self.cell_range):
+            for col_index in range(self.cell_range):
+                matrix_cell = board.matrix[row_index][col_index]
+
+                if matrix_cell.mine:
+                    label = ctk.CTkLabel(self.board_frame, text="💣", width=label_width, height=label_height,
+                                         fg_color="white", font=("Arial", 24))
+                else:
+                    label = ctk.CTkLabel(self.board_frame, text=matrix_cell.number, width=label_width,
+                                         height=label_height, fg_color="white", font=("Arial", 24))
+                label.grid(row=row_index, column=col_index, padx=0.5, pady=0.5)

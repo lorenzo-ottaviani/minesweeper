@@ -9,6 +9,7 @@ def surrounding_cells(x, y):
 
 
 class Cell:
+    """ Class to manage the cell."""
     def __init__(self, hidden=True, mine=False, marker=None):
         self.hidden = hidden
         self.mine = mine
@@ -17,6 +18,7 @@ class Cell:
 
 
 class Board:
+    """ Class to manage the board."""
     def __init__(self, difficulty):
         self.difficulty = difficulty
         if difficulty == "beginner":
@@ -72,11 +74,11 @@ class Board:
                     if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
                         self.matrix[x2][y2].number += 1
 
+        # Test : show the board matrix
         for row in self.matrix:
             for cell in row:
                 print(cell.mine, end="\t")
                 print(cell.number)
-
 
     def set_marker(self, x, y):
         """Cycle through a hidden cell's marker states from None -> flag -> ? -> None"""
