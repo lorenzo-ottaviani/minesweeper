@@ -1,6 +1,6 @@
 from board import Board, Cell
 from game import Game 
-from timer import Timer
+# from timer import Timer
 import tkinter as tk
 
 class GUI(tk.Tk):
@@ -55,8 +55,8 @@ class GUI(tk.Tk):
         self.restart_button.pack(side="right", padx=10)
         
         # Start timer.
-        self.timer = Timer(self.timer_label)
-        self.timer.start()
+        # self.timer = Timer(self.timer_label)
+        # self.timer.start()
 
         self.board = Board(difficulty)
         
@@ -126,7 +126,7 @@ class GUI(tk.Tk):
     
     def restart(self):
         '''Restart the game by returning to the welcome screen'''
-        self.timer.stop()
+        # self.timer.stop()
         self.clear_screen()
         self.welcome_screen() 
 
