@@ -25,7 +25,7 @@ class GUI(tk.Tk):
             widget.destroy()
 
     def welcome_screen(self):
-        '''Display welcome screen and difficulty selection'''
+        """Display welcome screen and difficulty selection"""
         self.clear_screen()
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(padx=10, pady=10)
