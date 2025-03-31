@@ -144,7 +144,7 @@ class GUI(tk.Tk):
                         if self.board.grid[i][j].mine:
                             self.buttons[i][j].config(text="💣", bg="red")
 
-                print("  PERDU ! ! ")
+                print("  YOU LOSE ! ! ")
             else:
                 if not self.first_click:
                     self.first_click = True
@@ -167,7 +167,7 @@ class GUI(tk.Tk):
                     button.config(text=surrounding_mines, bg="gray")
 
                 if game.check_win():
-                    messagebox.showinfo("Gagné",
+                    messagebox.showinfo("YOU WIN!",
                                         f"You win in {self.chrono // 60} minutes and {self.chrono % 60} seconds !")
                     self.fenetre.destroy()
 
@@ -190,7 +190,7 @@ class GUI(tk.Tk):
         print(f"{x} - {y}")
 
         if case.hidden:
-            case.changer_etat()
+            case.change_state()
             self.board.set_marker(x, y)
             if case.marker:
                 button.config(text="F", bg="orange")
