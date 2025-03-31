@@ -14,7 +14,7 @@ class Timer:
     def update(self):
         if self.running:
             timer = int(time.time() - self.start_time)
-            self.label.config(text=f'Timer: {timer}')
+            self.label.configure(text=f'Timer: {timer}')
             self.label.after(1000, self.update)
                
     def stop(self):
