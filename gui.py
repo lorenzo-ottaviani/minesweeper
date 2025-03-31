@@ -1,7 +1,8 @@
 from board import Board, Cell
-from game import Game 
+from game import Game
 from timer import Timer
 import tkinter as tk
+
 
 class GUI(tk.Tk):
     def __init__(self):
@@ -11,41 +12,41 @@ class GUI(tk.Tk):
         self.game = None
         self.buttons = []
         self.first_click = False
-        
+
         # Create a main frame for welcome screen widgets.
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(padx=10, pady=10)
-        
+
         self.welcome_screen()
-        
+
     def clear_screen(self):
         """Clear all widgets from the window."""
         for widget in self.winfo_children():
             widget.destroy()
-    
+
     def welcome_screen(self):
         '''Display welcome screen and difficulty selection'''
         self.clear_screen()
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(padx=10, pady=10)
-        
+
         diff_lbl = tk.Label(self.main_frame, text="Select Difficulty:")
         diff_lbl.pack(pady=5)
-        
+
         difficulties = ['beginner', 'intermediate', 'expert']
         for diff in difficulties:
             btn = tk.Button(self.main_frame, text=diff.capitalize(), width=15,
                             command=lambda d=diff: self.start_game(d))
             btn.pack(pady=3)
-    
+
     def start_game(self, difficulty):
         # Remove welcome screen components.
         self.clear_screen()
-        
+
         # Setup game and start timer.
         self.game = Game(difficulty)
         self.game.start_game()
-        
+
         # Create a top frame for timer and control buttons.
         self.top_frame = tk.Frame(self)
         self.top_frame.pack(pady=5)
@@ -53,27 +54,26 @@ class GUI(tk.Tk):
         self.timer_label.pack(side="left", padx=10)
         self.restart_button = tk.Button(self.top_frame, text="Restart", command=self.restart)
         self.restart_button.pack(side="right", padx=10)
-        
+
         # Start timer.
         self.timer = Timer(self.timer_label)
         self.timer.start()
 
         self.board = Board(difficulty)
-        
+
         # Display the game board.
         self.display_board()
-    
+
     def display_board(self):
-        '''Display game board as a grid of buttons'''
+        """Display game board as a grid of buttons"""
         board_frame = tk.Frame(self)
         board_frame.pack(pady=5)
         size = self.game.board.size
 
         self.buttons = []
         for x in range(size):
-            ligne_boutons = []
+            ligne_buttons = []
             for y in range(size):
-
                 btn = tk.Button(
                     board_frame,
                     width=3,
@@ -83,15 +83,15 @@ class GUI(tk.Tk):
                     command=lambda x=x, y=y: self.cliquer(x, y)
                 )
                 btn.grid(row=x, column=y)
-                ligne_boutons.append(btn)
-            self.buttons.append(ligne_boutons)
+                ligne_buttons.append(btn)
+            self.buttons.append(ligne_buttons)
 
         for ligne in range(size):
             for colonne in range(size):
-                self.buttons[ligne][colonne].bind("<Button-3>", lambda event, x=ligne, y=colonne: self.clic_droit(x, y))
+                self.buttons[ligne][colonne].bind("<Button-3>", lambda event, x=ligne, y=colonne: self.right_click(x, y))
 
     def update_buttons(self):
-        '''Update buttons to match the state of their corresponding cell'''
+        """Update buttons to match the state of their corresponding cell"""
 
         size = self.game.board.size
         for x in range(size):
@@ -113,9 +113,9 @@ class GUI(tk.Tk):
                         btn.configure(text="?", bg="yellow")
                     else:
                         btn.configure(text="", bg="darkgrey")
-    
+
     def reveal_mines(self):
-        '''Reveal all mines on the board after game over'''
+        """Reveal all mines on the board after game over"""
         size = self.game.board.size
         for x in range(size):
             for y in range(size):
@@ -123,26 +123,22 @@ class GUI(tk.Tk):
                 if cell.mine:
                     btn = self.buttons[x][y]
                     btn.configure(text="M", bg="red")
-    
+
     def restart(self):
-        '''Restart the game by returning to the welcome screen'''
+        """Restart the game by returning to the welcome screen"""
         self.timer.stop()
         self.clear_screen()
-        self.welcome_screen() 
+        self.welcome_screen()
 
-
-    # méthode pour cliquer sur une case, révélant si elle contient une mine ou non, et affichant le nombre de mines adjacentes si c'est le cas.
-    # Si la case est vide, on révèle toutes les cases adjacentes en rappellant la méthode récursivement jusqu'à atteindre une case avec des mines adjacentes.
     def cliquer(self, x, y):
         game = Game(self.board.difficulty)
-        coordonnes = []
+        coordinates = []
         case = self.board.grid[x][y]
         if not case.marker:
             case.hidden = False
-            bouton = self.buttons[x][y]
-            # Si la case contient une mine, on affiche une bombe et on révèle toutes les mines
+            button = self.buttons[x][y]
             if case.mine:
-                bouton.config(text="💣", bg="red")
+                button.config(text="💣", bg="red")
                 for i in range(self.board.x):
                     for j in range(self.board.y):
                         if self.board.grid[i][j].mine:
@@ -150,60 +146,56 @@ class GUI(tk.Tk):
 
                 print("  PERDU ! ! ")
             else:
-                if not self.first_click :
+                if not self.first_click:
                     self.first_click = True
 
                     self.board.add_mines(x, y)
 
-                mines_adjacentes = self.verifier_voisins(x, y)
-                # Si il n'y a pas de mines adjacentes, on révèle les cases adjacentes
-                if mines_adjacentes == 0:
-                    bouton.config(text="", bg="lightgray")
-                    coordonnes = [(x-1, y-1), (x-1, y), (x-1, y+1), (x, y-1), (x, y+1), (x+1, y-1), (x+1, y), (x+1, y+1)]
-                    for coordonne in coordonnes:
-                        if coordonne[0] >= 0 and coordonne[0] < self.board.x and coordonne[1] >= 0 and coordonne[1] < self.board.y:
-                            case = self.board.grid[coordonne[0]][coordonne[1]]
+                surrounding_mines = self.check_neighbours(x, y)
+                if surrounding_mines == 0:
+                    button.config(text="", bg="lightgray")
+                    coordinates = [(x - 1, y - 1), (x - 1, y), (x - 1, y + 1), (x, y - 1), (x, y + 1), (x + 1, y - 1),
+                                  (x + 1, y), (x + 1, y + 1)]
+                    for coordinate in coordinates:
+                        if coordinate[0] >= 0 and coordinate[0] < self.board.x and coordinate[1] >= 0 and coordinate[
+                            1] < self.board.y:
+                            case = self.board.grid[coordinate[0]][coordinate[1]]
                             if case.hidden:
-                                self.cliquer(coordonne[0], coordonne[1]) # Appel récursif
-                # Sinon, on affiche le nombre de mines adjacentes
-                elif mines_adjacentes > 0:
-                    bouton.config(text=mines_adjacentes, bg="gray")
+                                self.cliquer(coordinate[0], coordinate[1])
 
-                
+                elif surrounding_mines > 0:
+                    button.config(text=surrounding_mines, bg="gray")
+
                 if game.check_win():
-#                    self.arreter_chrono()
-                    messagebox.showinfo("Gagné", f"Vous avez gagné en {self.chrono // 60} minutes et {self.chrono % 60} secondes !")
+                    messagebox.showinfo("Gagné",
+                                        f"You win in {self.chrono // 60} minutes and {self.chrono % 60} seconds !")
                     self.fenetre.destroy()
 
-
-    # méthode pour vérifier le nombre de mines adjacentes à une case
-    def verifier_voisins(self, x, y):
-        mines_adjacentes = 0
-        coordonnes = [(x-1, y-1), (x-1, y), (x-1, y+1), (x, y-1), (x, y+1), (x+1, y-1), (x+1, y), (x+1, y+1)]
-        for coordonne in coordonnes:
-            if coordonne[0] >= 0 and coordonne[0] < self.board.x and coordonne[1] >= 0 and coordonne[1] < self.board.y:
-                case = self.board.grid[coordonne[0]][coordonne[1]]
+    def check_neighbours(self, x, y):
+        surrounding_mines = 0
+        coordinates = [(x - 1, y - 1), (x - 1, y), (x - 1, y + 1), (x, y - 1), (x, y + 1), (x + 1, y - 1), (x + 1, y),
+                      (x + 1, y + 1)]
+        for coordinate in coordinates:
+            if coordinate[0] >= 0 and coordinate[0] < self.board.x and coordinate[1] >= 0 and coordinate[1] < self.board.y:
+                case = self.board.grid[coordinate[0]][coordinate[1]]
                 if case.mine:
-                    mines_adjacentes += 1
-        return mines_adjacentes
+                    surrounding_mines += 1
+        return surrounding_mines
 
-
-    # méthode pour gérer le clic droit, permettant de placer des markerx ou des points d'interrogation
-    def clic_droit(self, x, y):
+    def right_click(self, x, y):
 
         case = self.board.grid[x][y]
         print(f"TYPE = {type(case)}")
-        bouton = self.buttons[x][y]
+        button = self.buttons[x][y]
         print(f"{x} - {y}")
 
         if case.hidden:
             case.changer_etat()
             self.board.set_marker(x, y)
             if case.marker:
-                bouton.config(text="F", bg="orange")
+                button.config(text="F", bg="orange")
 
             elif case.interrogation:
-                bouton.config(text="?", bg="yellow")
+                button.config(text="?", bg="yellow")
             else:
-                bouton.config(text="", bg="white")
-
+                button.config(text="", bg="white")

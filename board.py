@@ -1,10 +1,12 @@
 from random import randint
 
+
 def surrounding_cells(x,y):
     '''Return a list of x, y coordinates around a given cell'''
     return [(x-1, y-1), (x, y-1), (x+1, y-1),
             (x-1, y),              (x+1, y), 
             (x-1, y+1), (x, y+1), (x+1, y+1)]
+
 
 class Cell:
     def __init__(self, hidden=True, mine=False, marker=None, interrogation=None):
@@ -16,10 +18,9 @@ class Cell:
 
     def __repr__(self):
         return f"mine : {self.mine} - marker : {self.marker} - hidden : {self.hidden}"
-
     
-    def changer_etat(self):
-        print("CHANGEMENT")
+    def change_state(self):
+        print("CHANGE")
         if self.hidden:
             if self.marker:
                 self.marker = False
@@ -31,7 +32,7 @@ class Cell:
         print(self)
 
 
-class Board():
+class Board:
     def __init__(self, difficulty):
         self.difficulty = difficulty
         if difficulty == 'beginner':
@@ -53,7 +54,7 @@ class Board():
 
 
     def reveal(self, x, y):
-        '''Reveal a hidden cell and recusively reveal empty/zero value surrounding cells. Return True if mine'''
+        """Reveal a hidden cell and recusively reveal empty/zero value surrounding cells. Return True if mine"""
         cell = self.grid[x][y]
         # on first reveal, if all cells are hidden, then set-up mines randomly in grid
         if cell.hidden:
@@ -78,7 +79,7 @@ class Board():
         return cell.mine
     
     def add_mines(self, exclude_x, exclude_y):
-        '''Add mines to the board randomly and give values to surrounding cells'''
+        """Add mines to the board randomly and give values to surrounding cells"""
         mines_required = round((self.size ** 2) * 0.2)
         mines_added = 0
         while mines_added < mines_required:
@@ -95,30 +96,28 @@ class Board():
                     if x2 >= 0 and y2 >= 0 and x2 < self.size and y2 < self.size:
                         self.grid[x2][y2].number += 1
 
-
-    # méthode pour afficher la grid dans la console, utilisée pour le débogage
-    def afficher(self):
-        for ligne in self.grid:
-            for case in ligne:
+    def display(self):
+        for line in self.grid:
+            for case in line:
                 if case.mine:
                     print("B", end=" ")
                 else:
                     print("-", end=" ")
             print()
 
-    # méthode pour placer les mines aléatoirement
-    def placer_mines(self):
+
+    def set_mines(self):
         for i in range(self.mines):
             place = False
             while not place:
-                x = random.randint(0, self.lignes - 1)
-                y = random.randint(0, self.colonnes - 1)
-                if not self.grid[x][y].mine and not self.grid[x][y].revele: # On vérifie que la case ne contient pas déjà une mine
+                x = randint(0, self.lines - 1)
+                y = randint(0, self.colonnes - 1)
+                if not self.grid[x][y].mine and not self.grid[x][y].revele:
                     self.grid[x][y].mine = True
                     place = True
 
     def set_marker(self, x, y):
-        '''Cycle through a hidden cell's marker states from None -> flag -> ? -> None'''
+        """Cycle through a hidden cell's marker states from None -> flag -> ? -> None"""
         cell = self.grid[x][y]
         if cell.hidden:
             if cell.marker is None:
@@ -127,3 +126,4 @@ class Board():
                 cell.marker = '?'
             elif cell.marker == '?':
                 cell.marker = None
+                
