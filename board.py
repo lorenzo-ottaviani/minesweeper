@@ -51,8 +51,6 @@ class Board:
                 row.append(Cell())
             self.grid.append(row)
 
-
-
     def reveal(self, x, y):
         """Reveal a hidden cell and recusively reveal empty/zero value surrounding cells. Return True if mine"""
         cell = self.grid[x][y]
@@ -104,7 +102,6 @@ class Board:
                 else:
                     print("-", end=" ")
             print()
-
 
     def set_mines(self):
         for i in range(self.mines):

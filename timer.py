@@ -20,4 +20,3 @@ class Timer:
                
     def stop(self):
         self.running = False
-        
