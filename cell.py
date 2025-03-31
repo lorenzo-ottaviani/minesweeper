@@ -1,7 +1,8 @@
 from tkinter import Button, Label
 from random import sample
 
-class Cell :
+
+class Cell:
     all = []
     cell_count_label = None
     cell_count = 10
@@ -56,7 +57,6 @@ class Cell :
         
         for picked_mine in picked_as_mines:
             picked_mine.is_mine = True
-
 
     def __repr__(self):
         return f"Cell({self.x}, {self.y})"

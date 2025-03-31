@@ -1,5 +1,6 @@
 import time
 
+
 class Timer:
     def __init__(self, label):
         self.label = label
@@ -19,3 +20,4 @@ class Timer:
                
     def stop(self):
         self.running = False
+        
