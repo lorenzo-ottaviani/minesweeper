@@ -1,7 +1,7 @@
 from board import Board
 from game import Game 
 from timer import Timer
-import tkinter as tk
+import customtkinter as ctk
 
 class WelcomeScreen(ctk.CTkFrame):
     """Welcome screen with three difficulty options."""
